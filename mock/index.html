@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>mock-data</title>
+	<style>
+		* {
+		  box-sizing: border-box;
+		}
+		body, ul, li, p{
+		  margin: 0;
+		  padding: 0;
+		}
+		ul,li {
+			list-style: none;
+		}
+		a {
+			text-decoration: none;
+		}
+		.clearfix:after {
+			content: '';
+			display: block;
+			clear: both;
+		}
+		.ct {
+			font: 12px/150% Arial,Verdana,"\5b8b\4f53";
+			width: 702px;
+			margin: 20px auto;
+		}
+		.prod_box {
+			margin-left: -20px;
+			margin-top: -20px;
+		}
+		.prod_box .prod {
+			position: relative;
+			width: 220px;
+			float: left;
+			border: 1px solid #eee;
+			margin-top: 20px;
+			margin-left: 20px;
+			padding: 10px 20px;
+			text-align: center;
+		}
+		.prod .cover {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			background: #ccc;
+			opacity: 0;
+		}
+		.prod .cover:hover {
+			opacity: 0.6;
+		}
+		.prod .cover a:before { 
+			content: "";
+		    height: 100%;
+		    display: inline-block;
+		    vertical-align: middle;
+		}
+		.prod .cover a {
+			color: red;
+			vertical-align: middle;
+			padding: 10px;
+			border: 1px solid red;
+			border-radius: 5px;
+			background: #fff;
+		}
+		.prod .goods p{
+			text-align: left;
+			color: #666;
+		}
+		.prod .goods p:last-child {
+			color: red;
+		}
+		.add {
+			display: inline-block;
+			color: red;
+			border: 1px solid red;
+			padding: 10px 20px;
+			margin-top: 20px;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="ct">
+		<h2>珠宝首饰</h2>
+		<ul class="prod_box clearfix">
+					<li class="prod">
+						<div class="cover">
+							<a href="#">立即抢购</a>
+						</div>
+						<a class="goods" href="#">
+							<img src="3.jpg" alt="">
+							<p>藏美千足金和田玉金镶玉路路通吊坠</p>
+							<p>￥1699.00</p>
+						</a>
+					</li>
+					<li class="prod">
+						<div class="cover">
+							<a href="#">立即抢购</a>
+						</div>
+						<a class="goods" href="#">
+							<img src="3.jpg" alt="">
+							<p>藏美千足金和田玉金镶玉路路通吊坠</p>
+							<p>￥1699.00</p>
+						</a>
+					</li>
+					<li class="prod">
+						<div class="cover">
+							<a href="#">立即抢购</a>
+						</div>
+						<a class="goods" href="#">
+							<img src="3.jpg" alt="">
+							<p>藏美千足金和田玉金镶玉路路通吊坠</p>
+							<p>￥1699.00</p>
+						</a>
+					</li>
+					<li class="prod">
+						<div class="cover">
+							<a href="#">立即抢购</a>
+						</div>
+						<a class="goods" href="#">
+							<img src="3.jpg" alt="">
+							<p>藏美千足金和田玉金镶玉路路通吊坠</p>
+							<p>￥1699.00</p>
+						</a>
+					</li>
+					<li class="prod">
+						<div class="cover">
+							<a href="#">立即抢购</a>
+						</div>
+						<a class="goods" href="#">
+							<img src="3.jpg" alt="">
+							<p>藏美千足金和田玉金镶玉路路通吊坠</p>
+							<p>￥1699.00</p>
+						</a>
+					</li>
+					<li class="prod">
+						<div class="cover">
+							<a href="#">立即抢购</a>
+						</div>
+						<a class="goods" href="#">
+							<img src="3.jpg" alt="">
+							<p>藏美千足金和田玉金镶玉路路通吊坠</p>
+							<p>￥1699.00</p>
+						</a>
+					</li>
+		</ul>
+		
+		<a  class="add" href="#">添加</a>
+	</div>
+
+
+	<script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.js"></script>
+	<script>
+		var products = [
+				{
+					img: 'http://img10.360buyimg.com/N3/jfs/t2242/92/1446546284/374195/9196ac66/56af0958N1a723458.jpg',
+					name: '珂兰 黄金手 猴哥款',
+					price: '￥405.00'
+				},{
+					img: 'http://img10.360buyimg.com/N3/jfs/t2242/92/1446546284/374195/9196ac66/56af0958N1a723458.jpg',
+					name: '珂兰 黄金转运珠 猴哥款',
+					price: '￥100.00'
+				},{
+					img: 'http://img10.360buyimg.com/N3/jfs/t2242/92/1446546284/374195/9196ac66/56af0958N1a723458.jpg',
+					name: '珂兰 黄金手链 3D猴哥款',
+					price: '￥45.00'
+				}
+			];
+
+		function getHtml(prod){
+			var html = ''
+			html += '<li class="prod">'
+			html += '<div class="cover"><a href="#">立即抢购</a></div>'
+			html += '<a class="goods" href="#">'
+			html += '<img src="'+prod.img+'" alt="">'
+			html += '<p>'+prod.name+'</p>'
+			html += '<p>'+prod.price+'</p>'
+			html += '</li>'
+			return html
+		}
+
+		$('.add').on('click',function(){
+			var str = ''
+			for (var i = 0; i < products.length; i++) {
+				str += getHtml(products[i])
+			}
+			$('.prod_box').append(str)
+		})
+	</script>
+</body>
+</html>
