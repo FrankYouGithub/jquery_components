@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>图片懒加载</title>
+	<style>
+		.ct {
+			width: 1250px;
+			text-align: center;
+			margin: 0 auto;
+			box-shadow: 0 2px 2px 2px #ddd;
+		}
+		img {
+			width: 618px;
+			height: 347px;
+		}
+	</style>
+</head>
+<body>
+	
+	<div class="ct">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2016/11/16/582be65f3c7c8.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2016/11/16/582be65eac239.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2016/11/16/582be65e47ae4.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2016/11/16/582be65dcc25f.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2016/11/16/582be65d66bbc.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2016/11/16/582be65cbf3de.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2016/11/16/582be65c3f6e0.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2016/11/16/582be65bca776.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2016/11/16/582be65b352ad.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2016/11/16/582be094e96cc.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2016/11/16/582be0944bf7d.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2016/11/16/582be093aba28.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2016/11/16/582be09319b03.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2016/11/16/582be092b0dd5.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2015/04/01/551b8f3652c5a.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2015/08/09/55c71a798aa88.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2015/08/09/55c71a6eb78a7.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2015/08/09/55c719d884d92.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2015/06/21/5585ae1d8adec.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2015/06/21/5585ad80ea4c7.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2015/04/09/55264726ae69b.jpg@618w.jpg" alt="">
+		<img src="" data-src="http://cs.xinpianchang.com/uploadfile/stills/2015/04/07/55234a75a45e6.jpg@618w.jpg" alt="">
+		<p>ps：以上图片均来自<a href="http://www.xinpianchang.com/u370972">映纷创意</a>如有侵权,请联系本人删除</p>
+	</div>
+	
+	<script src="jquery-3.2.1.min.js"></script>
+	<script>
+
+		show($('.ct>img'))
+		$(window).on('scroll',function(){
+			show($('.ct>img'))
+		})
+
+		function isVisible($node){
+			var documentHeight = $(document).height()
+			var scrollTop = $(window).scrollTop()
+			var windowHeight = $(window).height()
+			var nodeOffsetTop = $node.offset().top
+			var nodeHeight = $node.outerHeight()
+			if (nodeOffsetTop<(scrollTop+windowHeight)&&scrollTop<(nodeOffsetTop+nodeHeight)) {
+				return	true
+			}else {
+				return false
+			}
+		}
+		function show($node){
+			$node.not('.load').each(function(){
+				if (isVisible($(this))) {
+					var url = $(this).attr('data-src')
+					$(this).attr('src',url)
+					$(this).addClass('load')
+				}
+			})
+		}
+	</script>
+</body>
+</html>

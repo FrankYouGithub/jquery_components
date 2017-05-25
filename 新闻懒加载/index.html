@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>新闻懒加载</title>
+	<style>
+		ul li {
+			list-style: none;
+		}
+		.ct {
+			width: 900px;
+			margin: 0 auto;
+		}
+		.ct p {
+			visibility: hidden;
+		}
+		.ct li {
+			height: 100px;
+			border: 1px solid #ff00ff;
+			line-height: 100px;
+			padding: 10px;
+			margin-bottom: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div class="ct">
+		<ul>
+		</ul>
+		<p>添加更多</p>
+	</div>
+
+	
+	<script src="jquery-3.2.1.min.js"></script>
+	<script>
+		var pageIndex = 0
+		var isLoad = true
+		check()
+		$(window).on('scroll',check)
+		function check(){
+			if (!isLoad) {
+				return
+			}
+			if (isVisible($('.ct>p'))) {
+				$.ajax({url: '/getNews?index='+pageIndex+'&length=5',
+						method: 'get'
+			}).done(function(result){
+				render(result)
+			}).fail(function(){
+				console.log('加载出错')
+			})
+			isLoad = false
+			}
+		}
+		function render(res){
+			console.log(res)
+			var html = ''
+			$.each(res,function(index,value){
+				html += '<li>'+value+'</li>'
+			})
+			$('.ct>ul').append(html)
+			pageIndex += 5
+			isLoad = true
+			if (isVisible($('.ct>p'))) {
+				check()
+			}
+		}
+		function isVisible($node){
+			var documentHeight = $(document).height()
+			var scrollTop = $(window).scrollTop()
+			var windowHeight = $(window).height()
+			var nodeOffsetTop = $node.offset().top
+			var nodeHeight = $node.outerHeight()
+			if (nodeOffsetTop<(scrollTop+windowHeight)&&scrollTop<(nodeOffsetTop+nodeHeight)) {
+				return	true
+			}else {
+				return false
+			}
+		}
+	</script>
+</body>
+</html>
