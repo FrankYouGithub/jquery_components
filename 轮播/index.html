@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>轮播</title>
+	<style>
+		div,ul,li,a,img {
+			margin: 0;
+			padding: 0;
+		}
+		a {
+			text-decoration: none;
+		}
+		li {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		@font-face {
+		  font-family: 'iconfont';
+		  src: url('./iconfont/iconfont.eot');
+		  src: url('./iconfont/iconfont.eot?#iefix') format('embedded-opentype'),
+		  url('./iconfont/iconfont.woff') format('woff'),
+		  url('./iconfont/iconfont.ttf') format('truetype'),
+		  url('./iconfont/iconfont.svg#iconfont') format('svg');
+		}
+		.xxx{
+		  font-family:"iconfont" !important;
+		  font-size:50px;font-style:normal;
+		  -webkit-font-smoothing: antialiased;
+		  -webkit-text-stroke-width: 0.2px;
+		  -moz-osx-font-smoothing: grayscale;
+		}
+		.clearfix:after {
+			content: '';
+			display: block;
+			clear: both;
+		}
+		.carousel-ct {
+			position: relative;
+			width: 618px;
+			height: 347px;
+			overflow: hidden;
+			margin: 0 auto;
+			border: 1px solid green
+		}
+		.carousel-ct .img-box {
+			position: relative;
+		}
+		.carousel-ct .img-box>li {
+			position: absolute;
+			display: none;
+		}
+		.carousel-ct .img-box img {
+			width: 618px;
+			height: 347px;
+		}
+		.carousel-ct .btn {
+			position: absolute;
+			top: 50%;
+			margin-top: -25px;
+			color: #fff;
+			border-radius: 50%;
+		}
+		.carousel-ct .btn:hover {
+			background: #ccc;
+			opacity: 0.6;
+		}
+		.previous {
+			left: 20px;
+		}
+		.next {
+			right: 20px;
+		}
+		.carousel-ct .subscript {
+			position: absolute;
+			bottom: 30px;
+			left: 50%;
+			margin-left: -75px;
+		}
+		.subscript>li {
+			float: left;
+			width: 10px;
+			height: 10px;
+			background-color: #fff;
+			border-radius: 50%;
+			margin: 0 10px;
+		}
+		.subscript>.active {
+			background-color: #165422;
+		}
+	</style>
+</head>
+<body>
+	<div class="carousel-ct">
+		<ul class="img-box">
+			<li><a href="#"><img src="http://cs.xinpianchang.com/uploadfile/stills/2015/04/01/551bb94881f9d.jpg@618w.jpg" alt="0"></a></li>
+			<li><a href="#"><img src="http://cs.xinpianchang.com/uploadfile/stills/2015/04/01/551bb947f12d8.jpg@618w.jpg" alt="1"></a></li>
+			<li><a href="#"><img src="http://cs.xinpianchang.com/uploadfile/stills/2015/04/01/551bb94641296.jpg@618w.jpg" alt="2"></a></li>
+			<li><a href="#"><img src="http://cs.xinpianchang.com/uploadfile/stills/2015/04/01/551bb946ee0e9.jpg@618w.jpg" alt="3"></a></li>
+			<li><a href="#"><img src="http://cs.xinpianchang.com/uploadfile/stills/2015/04/01/551bb5a4670bb.jpg@618w.jpg" alt="4"></a></li>
+		</ul>
+		
+		<a class="btn previous xxx" href="javascript:void(0)">&#xe600;</a>
+		<a class="btn next xxx" href="javascript:void(0)">&#xe601;</a>
+
+		<ul class="subscript clearfix">
+			<li class="active"></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+
+
+	<script src="jquery-3.2.1.min.js"></script>
+	<script>
+		var $imgBox = $('.img-box'),
+			$imgItems = $imgBox.children(),
+			$previousBtn = $('.previous'),
+			$nextBtn = $('.next'),
+			$subscript = $('.subscript'),
+			$imgLength = $imgItems.length
+		
+		var defaultIndex = 0;
+		show(0);
+		autoRun()
+		$previousBtn.on('click',function(){
+			playPrevious()
+		})
+		$nextBtn.on('click',function(){
+			playNext()
+		})
+
+		function playPrevious(){
+			show(($imgLength+defaultIndex-1)%$imgLength)
+		}
+		function playNext(){
+			show((defaultIndex+1)%$imgLength)
+		}
+		function playSubscript(){
+			$subscript.children().removeClass('active').eq(defaultIndex).addClass('active')
+		}
+		var clock = false
+		function show(index){
+			if (clock) {
+				return
+			}
+			clock = true
+			$imgItems.eq(defaultIndex).fadeOut(1000)
+			$imgItems.eq(index).fadeIn(1000,function(){
+				playSubscript()
+				clock = false
+			})
+			defaultIndex = index
+		}
+		function autoRun(){
+			setInterval(function(){
+				playNext()
+			},1500)
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>轮播</title>
+	<style>
+		ul,li {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		.clearfix:after {
+			content: "";
+			display: block;
+			clear: both;
+		}
+		.carousel {
+			position: relative;
+			width: 300px;
+			height: 200px;
+			overflow: hidden;
+		}
+		.carousel .img-ct {
+			position: relative;
+			width: : 1200px;
+			height: 200px;
+		}
+		.carousel .img-ct li {
+			float: left;
+		}
+		.carousel .img-ct img {
+			width: 300px;
+			height: 200px;
+		}
+		.carousel .btn {
+			position: absolute;
+			top: 50%;
+			margin-top: -15px;
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+			background-color: #333;
+			text-decoration: none;
+			color: #fff;
+			opacity: 0.6;
+			display: block;
+			line-height: 30px;
+			font-size: 18px;
+			text-align: center;
+		}
+		.carousel .btn-pre {
+			left: 10px;
+		}
+		.carousel .btn-next {
+			right: 10px;
+		}
+		.carousel .bullet {
+			position: absolute;
+			left: 50%;
+			margin-left: -72px;
+			bottom: 20px;
+		}
+		.carousel .bullet>li {
+			width: 20px;
+			height: 6px;
+			border-radius: 3px;
+			background-color: #fff;
+			float: left;
+			margin: 0 8px;
+		}
+		.carousel .bullet>.active {
+			background-color: #666
+		}
+	</style>
+</head>
+<body>
+	<div class="carousel">
+		<ul class="img-ct clearfix">
+			<li><a href=""><img src="http://cs.xinpianchang.com/uploadfile/stills/2015/04/09/55264720ab2ab.jpg@618w.jpg" alt="0"></a></li>
+			<li><a href=""><img src="http://cs.xinpianchang.com/uploadfile/stills/2015/04/09/55264726ae69b.jpg@618w.jpg" alt="1"></a></li>
+			<li><a href=""><img src="http://cs.xinpianchang.com/uploadfile/stills/2015/04/09/552647189a888.jpg@618w.jpg" alt="2"></a></li>
+			<li><a href=""><img src="http://cs.xinpianchang.com/uploadfile/stills/2015/04/09/5526471b6c37d.jpg@618w.jpg" alt="3"></a></li>
+		</ul>
+		<a class="btn btn-pre" href="javascript:void(0)">&lt;</a>
+		<a class="btn btn-next" href="javascript:void(0)">&gt;</a>
+		<ul class="bullet clearfix">
+			<li class="active"></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+
+
+	<script src="jquery-3.2.1.min.js"></script>
+	<script>
+		$imgCt = $('.img-ct')
+		$btnPre = $('.btn-pre')
+		$btnNext = $('.btn-next')
+		$bullet = $('.bullet')
+
+		var index = 0
+		var itemLength = $imgCt.children().length
+
+		$first = $imgCt.find('li').first()//获取第一张图片
+		$last  = $imgCt.find('li').last()//获取最后一张图片
+
+		$imgCt.append($first.clone())
+		$imgCt.prepend($last.clone())
+		
+		$imgCt.width($first.width()*$imgCt.children().length)
+		$imgCt.css('left','-300px')
+
+		setInterval(function(){
+			playNext()
+		},2000)
+
+		$btnPre.on('click',function(){
+			playPre()
+		})
+		$btnNext.on('click',function(){
+			playNext()
+		})
+		var isClock = false;
+		function playNext(){
+			if (isClock) {
+				return
+			}
+			isClock = true
+			$imgCt.animate({
+				left: '-=300'
+			},function(){
+				index++
+				if (index === itemLength) {
+				$imgCt.css('left','-300px')
+				index = 0
+			}
+			isClock = false
+			playIndex()
+			})
+			
+		}
+		function playPre(){
+			if (isClock) {
+				return
+			}
+			isClock = true
+			$imgCt.animate({
+				left: '+=300'
+			},function(){
+				index--
+				if (index < 0) {
+				$imgCt.css('left',0-(itemLength * $first.width()))
+				index = itemLength-1
+			}
+			isClock = false
+			playIndex()
+			})
+			
+		}
+		function playIndex(){
+			$bullet.children().removeClass('active').eq(index).addClass('active')
+			console.log(index)
+		}
+
+	</script>
+</body>
+</html>
