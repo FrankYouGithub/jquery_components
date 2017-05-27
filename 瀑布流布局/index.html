@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>瀑布流布局</title>
+	<style>
+		.box {
+			position: relative;
+		}
+		.item {
+			border: 1px solid #000;
+			position: absolute;
+			width: 200px;
+			margin-top: 10px;
+			margin-right: 10px;
+			transition: all 1s;
+		}
+		.h1 {
+			height: 150px;
+			background-color: red;
+		}
+		.h2 {
+			height: 250px;
+			background-color: blue;
+		}
+		.h3 {
+			height: 350px;
+			background-color: green;
+		}
+		.h4 {
+			height: 450px;
+			background-color: yellow;
+		}
+	</style>
+</head>
+<body>
+	<div class="box">
+		<div class="item h1">1</div>
+		<div class="item h3">2</div>
+		<div class="item h2">3</div>
+		<div class="item h4">4</div>
+		<div class="item h2">5</div>
+		<div class="item h4">6</div>
+		<div class="item h1">7</div>
+		<div class="item h3">8</div>
+		<div class="item h1">9</div>
+		<div class="item h3">10</div>
+		<div class="item h4">11</div>
+		<div class="item h2">12</div>
+		<div class="item h2">13</div>
+		<div class="item h1">14</div>
+		<div class="item h3">15</div>
+		<div class="item h2">16</div>
+	</div>
+
+	<script src="jquery-3.2.1.min.js"></script>
+	<script>
+		render()
+		$(window).on('resize',function(){
+			render()
+		})
+
+		function render(){
+			var arr = []
+			var $itemsWidth = $('.item').outerWidth()
+			var arrSize = parseInt($(window).width()/$itemsWidth)
+			for(var i=0;i<arrSize;i++){
+				arr.push(0)
+			}
+			$('.box>.item').each(function(){
+				var $this = $(this)
+				var minValue = Math.min.apply(null,arr)
+				var minIndex = arr.indexOf(minValue)
+
+				$this.css({
+					top: minValue,
+					left: minIndex*$itemsWidth
+				})
+				arr[minIndex] += $this.outerHeight()
+			})
+		}
+
+		
+	</script>
+</body>
+</html>
