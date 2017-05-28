@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>每日新闻</title>
+	<style>
+		ul,li,div,a,h4,p {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		ul,li {
+			list-style: none;
+		}
+		.box {
+			width: 900px;
+			margin: 0 auto;
+		}
+		.newsBox {
+			position: relative;
+		}
+		.newsBox .items {
+			position: absolute;
+			width: 280px;
+			margin: 10px;
+			padding: 0 0 10px 0;
+			border: 1px solid #DFDFDF;
+			transition: all 1s;
+		}
+		.newsBox .items img {
+			width: 260px;
+			margin: 10px;
+		}
+		.newsBox .items .title {
+			font-size: 16px;
+			border-bottom: 1px solid #ccc;
+			padding: 10px;
+			margin: 0 10px;
+		}
+		.newsBox .items .describe {
+			font-size: 14px;
+			line-height: 1.8;
+			color: #666;
+			padding: 10px;
+		}
+		.clearfix:after {
+			content: '';
+			display: block;
+			clear: both;
+		}
+		.hide {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="box">
+		<div class="ct">
+			<ul class="newsBox clearfix">
+				<!-- <li class="items">
+					<a href=""><img src="http://n.sinaimg.cn/tech/transform/20170525/PLrL-fyfquww8449264.jpg" alt=""></a>
+					<h4 class="title">狗狗被蜜蜂咬后成这样了:想笑</h4>
+					<p class="describe">狗狗被蜜蜂咬后成这样了 我还是不厚道的想笑</p>
+				</li>
+				<li class="items">
+					<a href=""><img src="http://n.sinaimg.cn/tech/transform/20170525/PLrL-fyfquww8449264.jpg" alt=""></a>
+					<h4 class="title">狗狗被蜜蜂咬后成这样了:想笑</h4>
+					<p class="describe">狗狗被蜜蜂咬后成这样了 我还是不厚道的想笑</p>
+				</li>
+				<li class="items">
+					<a href=""><img src="http://n.sinaimg.cn/tech/transform/20170525/PLrL-fyfquww8449264.jpg" alt=""></a>
+					<h4 class="title">狗狗被蜜蜂咬后成这样了:想笑</h4>
+					<p class="describe">狗狗被蜜蜂咬后成这样了 我还是不厚道的想笑</p>
+				</li> -->
+				<li class="items hide"></li>
+			</ul>
+			<p class="sign">text</p>	
+		</div>
+	</div>
+	<script src="jquery-3.2.1.min.js"></script>
+	<script>
+		check()
+		var PageCount = 10,
+			curPage = 1
+		var clock = false
+		//获取数据
+		$(window).on('scroll',check)
+		function getDate(){
+			if (clock) {
+				return
+			}
+			clock = true
+			$.ajax({
+				url: 'http://platform.sina.com.cn/slide/album_tech',
+				method: 'get',
+				dataType: 'jsonp',
+				jsonp:"jsoncallback",
+				data: {
+				app_key: '1271687855',
+				num: PageCount,
+				page: curPage
+			}
+			}).done(function(res){
+				console.log('getDate()')
+				addHtml(res.data)
+			})
+		}
+		function check(){
+			if (isVisible($('.ct>.sign'))) {
+				console.log('check()')
+				getDate()
+			}
+		}
+		//判断元素是否在窗口中显示
+		function isVisible($node){
+			console.log('isVisible($node)')
+			var $scrollHeight = $(window).scrollTop()
+			var $windowHeight = $(window).height()
+			var $nodeScrollTop = $node.offset().top
+			if ($nodeScrollTop<($scrollHeight+$windowHeight)) {
+				return true
+			}else{
+				return false
+			}
+		}
+		//瀑布流
+		var colSumHeight = []
+		var nodeWidth = $('.items').outerWidth(true)
+		var colNum = parseInt($('.newsBox').width()/nodeWidth)
+		for(var i=0;i<colNum;i++){
+			colSumHeight.push(0)
+		}
+		function waterFall($node){
+			console.log('waterFall($node)')
+			var minValue = Math.min.apply(null,colSumHeight)
+			var minIndex = colSumHeight.indexOf(minValue)
+			$node.css({
+				left: nodeWidth*minIndex,
+				top: minValue
+			})
+			colSumHeight[minIndex] += $node.outerHeight(true)
+			$('.newsBox').height(Math.max.apply(null,colSumHeight))
+		}
+		//渲染数据
+		function addHtml(datalist){
+			console.log('addHtml(datalist)')
+			$.each(datalist,function(){
+				var $node = getHtml(this)
+
+				$node.find('img').on('load',function(){
+					$('.newsBox').append($node)
+					waterFall($node)
+				})
+				// $node.find('img').load(function(){
+				// 	$('.newsBox').append($node)
+				// 	waterFall($node)
+				// })
+			})
+			curPage++
+			clock = false
+		}
+		//获取将要渲染的节点
+		function getHtml(data){
+			console.log('getHtml(data)')
+			var html = ''
+			html+='<li class="items">'
+			html+='<a href="'+data.url+'"><img src="'+data.img_url+'" alt=""></a>'
+    		html+='<h4 class="title">'+data.short_name+'</h4>'
+			html+='<p class="describe">'+data.short_intro+'</p>'		
+			html+='</li>'
+			return $(html)
+		}
+	</script>
+</body>
+</html>
